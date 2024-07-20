@@ -4,7 +4,13 @@ import org.springboot.proxyapi.dto.FakeStoreDTO;
 import org.springboot.proxyapi.models.Category;
 import org.springboot.proxyapi.models.Product;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpMessageConverterExtractor;
+import org.springframework.web.client.RequestCallback;
+import org.springframework.web.client.ResponseExtractor;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
@@ -29,13 +35,27 @@ public class FakeStoreProductService implements ProductService {
         product.setTitle(fakeStoreDTO.getTitle());
         product.setPrice(fakeStoreDTO.getPrice());
         product.setDescription(fakeStoreDTO.getDescription());
-
+        product.setImage(fakeStoreDTO.getImage());
         Category category = new Category();
         category.setDescription(fakeStoreDTO.getCategory());
         // category id is not yet set
+        // category.setId(1L);
         product.setCategory(category);
 
         return product;
+    }
+
+    public FakeStoreDTO convertProductToFakeStoreDTO(Product product){
+        FakeStoreDTO fakeStoreDTO = new FakeStoreDTO();
+        fakeStoreDTO.setTitle(product.getTitle());
+        fakeStoreDTO.setPrice(product.getPrice());
+        fakeStoreDTO.setDescription(product.getDescription());
+        fakeStoreDTO.setImage(product.getImage());
+        Category category = new Category();
+        category.setDescription(product.getCategory().getDescription());
+//        category.setId(1L);
+        fakeStoreDTO.setCategory(product.getCategory().getDescription());
+        return fakeStoreDTO;
     }
 
     @Override
@@ -66,4 +86,19 @@ public class FakeStoreProductService implements ProductService {
         }
         return products;
     }
+
+    @Override
+    public Product replaceProduct(Long id, Product product) {
+        FakeStoreDTO fakeStoreDTO = convertProductToFakeStoreDTO(product);
+
+        RequestCallback requestCallback = restTemplate.httpEntityCallback(fakeStoreDTO,FakeStoreDTO.class);
+        HttpMessageConverterExtractor<FakeStoreDTO> responseExtractor = new HttpMessageConverterExtractor<>(FakeStoreDTO.class,
+                restTemplate.getMessageConverters());
+
+        FakeStoreDTO resp = restTemplate.execute("https://fakestoreapi.com/products/"+id,HttpMethod.PUT,requestCallback,responseExtractor);
+
+        return ConvertFakeStoreDTOtoProduct(resp);
+    }
+
+
 }

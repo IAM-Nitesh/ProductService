@@ -29,6 +29,13 @@ Build a product proxy service
     1. Create FakeStoreDTO with attributes same as the 3rd Party API
     2. in FakeStoreProductService, getProductsById -> use DTO object to store the response returned by the FakeStore API
 
-7. Convert DTO object into Product Object -> To exactly map the output of the FakeStore api into our project
-   1. Create a method ConvertFakeStoreDTOtoProduct inside FakeStoreProductService
-   2.
+7. Save into and convert DTO object into Product Object -> To exactly map the output of the FakeStore api into our project
+   1. Saving the response from Fake store api to DTO object
+   2. Create a method ConvertFakeStoreDTOtoProduct inside FakeStoreProductService to convert dto into product object
+
+
+ --- for every new api
+ 1. update the contract in product service interface with the new api
+ 2. update controller with the new Rest method
+ 3. implement the method in fakestore product service
+
