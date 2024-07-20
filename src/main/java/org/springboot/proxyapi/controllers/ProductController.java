@@ -2,10 +2,8 @@ package org.springboot.proxyapi.controllers;
 
 import org.springboot.proxyapi.models.Product;
 import org.springboot.proxyapi.services.ProductService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.*;
 
 @RestController
@@ -27,9 +25,13 @@ public class ProductController {
     //localhost:8080/products
     @GetMapping()
     public List<Product> getAllProducts(){
-        return new ArrayList<Product>();
+        return productService.getAllProducts();
     }
 
+//    @PostMapping()
+//    public Product createProduct(@RequestBody Product product){
+//
+//    }
     // createProduct
     // deleteProduct
     // updateProduct

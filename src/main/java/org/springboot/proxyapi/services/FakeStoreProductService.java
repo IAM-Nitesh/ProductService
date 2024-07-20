@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -31,6 +32,7 @@ public class FakeStoreProductService implements ProductService {
 
         Category category = new Category();
         category.setDescription(fakeStoreDTO.getCategory());
+        // category id is not yet set
         product.setCategory(category);
 
         return product;
@@ -52,6 +54,16 @@ public class FakeStoreProductService implements ProductService {
 
     @Override
     public List<Product> getAllProducts() {
-        return List.of(new Product());
+
+        // 1. Creating a array of fakestoredto objects to store the response from the url using rest template
+        FakeStoreDTO[] fakeStoreDTOList = restTemplate.getForObject("https://fakestoreapi.com/products",FakeStoreDTO[].class);
+
+        List<Product> products = new ArrayList<>();
+
+        // 2. convert dto objects to array of Product objects
+        for ( FakeStoreDTO fakeStoreDTO : fakeStoreDTOList ) {
+            products.add(ConvertFakeStoreDTOtoProduct(fakeStoreDTO));
+        }
+        return products;
     }
 }
