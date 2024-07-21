@@ -1,0 +1,105 @@
+.App {
+  min-height: 100vh; /* Make the App component fill the viewport height */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Align items to the left */
+  justify-content: center;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  background-image: linear-gradient(to bottom, #a0d2eb, #e5eaf5, #d0bdf4, #8458B3, #a28089);
+  background-attachment: fixed; /* Ensure background stretches over the entire page */
+}
+
+
+.buttonHoverEffect:hover {
+  background-color: #b3d4fc; /* Lighter shade for hover */
+  cursor: pointer; /* Changes cursor to pointer to indicate it's clickable */
+}
+
+.titleContainer {
+  width: 100%;
+  text-align: Center; /* Align contents to the left */
+  margin-top: 20px; /* Keep the top margin to position it at the top */
+}
+
+.logo {
+  background: none;
+  maxWidth: 100px; /* Adjust this value to make the logo smaller */
+  width: 20%;
+  height: auto;
+}
+
+.titleContainer h1 {
+  font-size: 24px; /* Adjust the font size as needed */
+  color: #00008b;
+}
+
+.tableContainer {
+  width: 100%; /* Use the full width of the container */
+  max-height: 70vh; /* Adjust based on your header/footer size */
+  overflow-y: auto; /* Allows table to scroll internally if needed */
+}
+
+table {
+  border-collapse: separate;
+  border-spacing: 10px 0; /* Increase the distance between columns without affecting rows */
+}
+
+th, td {
+  padding: 10px; /* Adjust padding for more space inside each cell */
+}
+
+.tableWide {
+  width: 100%; /* Use the full width of the tableContainer */
+  table-layout: fixed; /* Helps with handling column widths */
+}
+.tableWide th, .tableWide td {
+  padding: 8px; /* Adjust padding to ensure content fits */
+  text-align: left; /* Adjust text alignment as needed */
+  font-size: 0.9rem; /* Adjust font size to fit content */
+}
+
+@media screen and (max-width: 600px) {
+  .tableWide th, .tableWide td {
+    padding: 4px; /* Reduce padding for smaller screens */
+    font-size: 0.8rem; /* Reduce font size for smaller screens */
+  }
+}

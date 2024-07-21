@@ -39,3 +39,11 @@ Build a product proxy service
  2. update controller with the new Rest method
  3. implement the method in fakestore product service
 
+-- Response Entity
+
+In controller - all the return types should be dto objects and not entity
+1. change return type from product to ResponseEntity<Product>
+2. return new ResponseEntity<>(product,HttpStatus.NOT_FOUND/ok/etc)
+
+-- Exception Handling
+
