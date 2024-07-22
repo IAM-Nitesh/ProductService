@@ -4,13 +4,13 @@ import org.springboot.proxyapi.dto.FakeStoreDTO;
 import org.springboot.proxyapi.models.Category;
 import org.springboot.proxyapi.models.Product;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpHeaders;
+//import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+//import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpMessageConverterExtractor;
 import org.springframework.web.client.RequestCallback;
-import org.springframework.web.client.ResponseExtractor;
+//import org.springframework.web.client.ResponseExtractor;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
@@ -87,6 +87,7 @@ public class FakeStoreProductService implements ProductService {
         List<Product> products = new ArrayList<>();
 
         // 2. convert dto objects to array of Product objects
+        // check fakeStoreDTOList for null pointer exception
         for ( FakeStoreDTO fakeStoreDTO : fakeStoreDTOList ) {
             products.add(ConvertFakeStoreDTOtoProduct(fakeStoreDTO));
         }
@@ -96,13 +97,12 @@ public class FakeStoreProductService implements ProductService {
     @Override
     public Product replaceProduct(Long id, Product product) {
         FakeStoreDTO fakeStoreDTO = convertProductToFakeStoreDTO(product);
-
         RequestCallback requestCallback = restTemplate.httpEntityCallback(fakeStoreDTO,FakeStoreDTO.class);
         HttpMessageConverterExtractor<FakeStoreDTO> responseExtractor = new HttpMessageConverterExtractor<>(FakeStoreDTO.class,
                 restTemplate.getMessageConverters());
 
         FakeStoreDTO resp = restTemplate.execute("https://fakestoreapi.com/products/"+id,HttpMethod.PUT,requestCallback,responseExtractor);
-
+        // check rest for null pointer exception
         return ConvertFakeStoreDTOtoProduct(resp);
     }
 
