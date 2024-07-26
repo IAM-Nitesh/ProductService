@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ProductTable from './model/ProductTable';
 import Pagination from './model/Pagination';
 import ProductModal from './model/ProductModal';
@@ -8,46 +8,38 @@ import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 
 function ProductActions() {
-    const {
-        products,
-        getProductById,
-        getAllProducts,
-        replaceProduct,
-        errorMessage,
-        resolution,
-        snackbarOpen,
-        setSnackbarOpen
-    } = useProductActions();
-
-    const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage] = useState(5);
+    const { products, productDetails, getProductById, getAllProducts, replaceProduct, errorMessage, resolution, snackbarOpen, setSnackbarOpen, setProductDetails } = useProductActions();
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [productDetails, setProductDetails] = useState(null);
-    const totalPages = Math.ceil(products.length / itemsPerPage);
-    const indexOfLastProduct = currentPage * itemsPerPage;
-    const indexOfFirstProduct = indexOfLastProduct - itemsPerPage;
-    const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
+    const [currentProducts, setCurrentProducts] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [productsPerPage] = useState(4); // Set to 4 products per page
 
-    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+    useEffect(() => {
+        const fetchProducts = async () => {
+            await getAllProducts();
+        };
+        fetchProducts();
+    }, []);
 
-    const handleSubmit = (event, productDetails) => {
-        event.preventDefault();
-        replaceProduct(productDetails.id, productDetails);
-        setIsModalOpen(false);
-    };
+    useEffect(() => {
+        const indexOfLastProduct = currentPage * productsPerPage;
+        const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+        setCurrentProducts(products.slice(indexOfFirstProduct, indexOfLastProduct));
+    }, [products, currentPage, productsPerPage]);
 
-    const handleSnackbarClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
+    const paginate = pageNumber => setCurrentPage(pageNumber);
+
+    const handleSnackbarClose = () => {
         setSnackbarOpen(false);
     };
 
     const handleGetProductById = async () => {
         const id = prompt('Enter Product ID:');
-        const response = await getProductById(id);
-        if (response) {
-            console.log('Get Product by ID Response:', response);
+        if (id) {
+            const response = await getProductById(id);
+            if (response) {
+                console.log('Get Product by ID Response:', response);
+            }
         }
     };
 
@@ -80,8 +72,8 @@ function ProductActions() {
                 <button onClick={handleReplaceProduct}>Replace Product</button>
             </div>
             <ProductTable products={currentProducts} />
-            <Pagination totalPages={totalPages} paginate={paginate} />
-            <ProductModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onSubmit={handleSubmit} productDetails={productDetails} />
+            <Pagination totalPages={Math.ceil(products.length / productsPerPage)} paginate={paginate} />
+            <ProductModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onSubmit={replaceProduct} productDetails={productDetails} />
             <ErrorSnackbar open={snackbarOpen} onClose={handleSnackbarClose} errorMessage={errorMessage} resolution={resolution} />
             <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose}>
                 <Alert onClose={handleSnackbarClose} severity="error" elevation={6} variant="filled" style={{ whiteSpace: 'pre-line' }}>
