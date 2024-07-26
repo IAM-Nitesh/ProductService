@@ -1,15 +1,13 @@
 package org.springboot.proxyapi.controllers;
 
+import org.springboot.proxyapi.exceptions.ProductNotFoundException;
 import org.springboot.proxyapi.models.Product;
 import org.springboot.proxyapi.services.ProductService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
 
 
 import java.util.*;
@@ -29,11 +27,11 @@ public class ProductController {
 
     //localhost:8080/products/id
     @GetMapping({"/{id}"})
-    public ResponseEntity<Product> getProductById(@PathVariable("id") Long id){
+    public ResponseEntity<Product> getProductById(@PathVariable("id") Long id) throws ProductNotFoundException {
         Product product= productService.getProductById(id);
-        if (product == null){
-            return new ResponseEntity<>(product,HttpStatus.NOT_FOUND);
-        }
+//        if (product == null){
+//            return new ResponseEntity<>(product,HttpStatus.NOT_FOUND);
+//        }
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
 

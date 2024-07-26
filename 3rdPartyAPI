@@ -1,6 +1,6 @@
 Context:
 
-Build a product proxy service
+--- Build a product proxy service
 
 1. Model creation :
    a. Entity as Product with resp attributes
@@ -34,16 +34,33 @@ Build a product proxy service
    2. Create a method ConvertFakeStoreDTOtoProduct inside FakeStoreProductService to convert dto into product object
 
 
- --- for every new api
+--- for every new api
  1. update the contract in product service interface with the new api
  2. update controller with the new Rest method
  3. implement the method in fakestore product service
 
--- Response Entity
+--- Response Entity
 
 In controller - all the return types should be dto objects and not entity
 1. change return type from product to ResponseEntity<Product>
 2. return new ResponseEntity<>(product,HttpStatus.NOT_FOUND/ok/etc)
 
--- Exception Handling
+--- Exception Handling
+
+In case we have any custom exception eg (  ProductIdNotFoundException )
+ a. create a package exceptions
+ b. inside that create a class for your custom exception by extending Exception class.
+ c. Check at the service / controller level if the exception is thrown and if not then throw the custom exception
+
+Use your custom exception in exception handler
+  1. Crete a package for exception handling
+  2. Create a class for exception handling with @ControllerAdvice annotation
+  3. Now for every global exception handler create a method with @ExceptionHandler annotation
+   and use ResponseEntity to send custom response back to the client
+  4. For every exception type create a dto to send the response back to the client with better readability and resolve message
+    It can have custom Response message, error message and resolution steps.
+
+
+
+
 

@@ -1,10 +1,9 @@
 import React from 'react';
 import './App.css';
 import ProductActions from './ProductAction';
+import reportWebVitals from './reportWebVitals';
 import logo from './logo.png';
 import GmailWidget from './emailplugin'; // Adjust the path as necessary
-import './App.css';
-
 
 function App() {
     return (

@@ -1,0 +1,34 @@
+Notes:
+
+1.Paste below <dependency> code from https://mvnrepository.com/ for below two in pox.xml file
+  and sync up the pom file
+    1. Spring Boot Starter Data JPA » 3.3.2
+    2. mysql-connector-j
+2. Setup Docker container and run the sql image
+3. Run below sql commands in workbench or any other id
+   1. create database productservice;
+   2. use productservice;
+   3. create user productserviceuser;
+   4. grant all privileges on productservice.* to productserviceuser;
+4. To connect sprint boot project and database
+   Update application.properties file under main-> resources folder
+5. Run below in terminal to create a network - to connect the application to mysql
+   docker network create networksql  - create a network
+   docker network connect networksql mysql-productservice - connect mysql container to this network
+6. Inorder to create tables in db - we need to instruct ORM ie hibernate to do that on our behalf
+   eg : In models we have two classes category and product
+   1. @Entity is used to define that table needs to be created for that class
+   2. @id to define the primary key
+   3. @ManyToOne : Inorder to define cardinality
+7. Create an Abstract basemodel class and move all the common columns to this class
+   1. @MappedSuperClass - Define the way of inheritance amongst your classes - MappedSuperClass Inheritance
+   2. @Inheritance (strategy=InheritanceType.JOINED) - Joined Table Inheritance
+      add @Entity to base class and add @id as well for primary key in parent tables
+      add @PrimaryKeyJoinColumn( name = "user_id") to add foreign key in all the child tables
+   3. @Inheritance (strategy=InheritanceType.SINGLETABLE) -- single table inheritance
+
+   4. -- Table per class
+
+
+
+
